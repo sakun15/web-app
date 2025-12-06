@@ -1,0 +1,253 @@
+<div class="verification-container">
+    <div class="verification-wrapper">
+        <!-- Header -->
+        <mat-card class="header-card">
+            <mat-card-header>
+                <mat-card-title class="main-title">
+                    <mat-icon class="title-icon">verified_user</mat-icon>
+                    ID Verification
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="subtitle">Verify your identity with government-issued IDs, live photo, and signature</p>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Success Message -->
+        <mat-card class="success-card" *ngIf="isSubmitted">
+            <mat-card-content>
+                <div class="success-content">
+                    <mat-icon class="success-icon">check_circle</mat-icon>
+                    <h2>Verification Submitted Successfully!</h2>
+                    <p>Your documents and verification details have been received. Our team will verify them within
+                        24-48 hours.</p>
+                    <div class="success-actions">
+                        <button mat-raised-button color="primary" (click)="resetVerification()">
+                            <mat-icon>add</mat-icon>
+                            New Verification
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Verification Form Stepper -->
+        <mat-card class="form-card" *ngIf="!isSubmitted">
+            <mat-card-content>
+                <mat-stepper #stepper linear>
+                    <!-- Step 1: ID Documents -->
+                    <mat-step label="ID Documents">
+                        <div class="step-content">
+                            <h3 class="step-title">
+                                <mat-icon>badge</mat-icon>
+                                Upload Government ID Documents
+                            </h3>
+
+                            <form [formGroup]="documentForm" class="document-form">
+                                <div class="form-grid">
+                                    <!-- Document Type -->
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Select ID Type</mat-label>
+                                        <mat-select formControlName="documentType"
+                                            (selectionChange)="onDocumentTypeChange()">
+                                            <mat-option *ngFor="let doc of documentTypes" [value]="doc.value">
+                                                {{ doc.label }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-icon matSuffix>credit_card</mat-icon>
+                                        <mat-error>Please select an ID type</mat-error>
+                                    </mat-form-field>
+
+                                    <!-- Document Number -->
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>ID Number</mat-label>
+                                        <input matInput formControlName="documentNumber"
+                                            [placeholder]="getSelectedDocumentType()?.placeholder || 'Enter ID number'"
+                                            [style.text-transform]="getSelectedDocumentType()?.value === 'pan' ? 'uppercase' : 'none'" />
+                                        <mat-icon matSuffix>numbers</mat-icon>
+                                        <mat-error *ngIf="documentForm.get('documentNumber')?.hasError('required')">
+                                            ID number is required
+                                        </mat-error>
+                                        <mat-error *ngIf="documentForm.get('documentNumber')?.hasError('pattern')">
+                                            Please enter a valid {{ getSelectedDocumentType()?.label }} number
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <!-- File Upload -->
+                                    <div class="file-upload-container full-width">
+                                        <input type="file" #fileInput (change)="onFileSelected($event)"
+                                            accept="image/*,.pdf" style="display: none" />
+                                        <button mat-raised-button color="accent" type="button"
+                                            (click)="fileInput.click()"
+                                            [disabled]="!documentForm.get('documentType')?.value">
+                                            <mat-icon>upload_file</mat-icon>
+                                            Upload Document
+                                        </button>
+                                        <span class="file-info"
+                                            *ngIf="uploadedDocuments.length > 0 && uploadedDocuments[0].file">
+                                            {{ uploadedDocuments[0].file.name }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Add Document Button -->
+                                    <div class="full-width">
+                                        <button mat-raised-button color="primary" type="button" (click)="addDocument()"
+                                            [disabled]="!documentForm.valid">
+                                            <mat-icon>add</mat-icon>
+                                            Add Document
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Uploaded Documents List -->
+                            <div class="uploaded-documents" *ngIf="uploadedDocuments.length > 0">
+                                <h4>Uploaded Documents ({{ uploadedDocuments.length }})</h4>
+                                <div class="documents-grid">
+                                    <mat-card *ngFor="let doc of uploadedDocuments; let i = index"
+                                        class="document-card">
+                                        <mat-card-header>
+                                            <mat-card-title>{{ getDocumentLabel(doc.type) }}</mat-card-title>
+                                            <button mat-icon-button (click)="removeDocument(i)" class="remove-btn">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <div class="document-preview" *ngIf="doc.preview">
+                                                <img [src]="doc.preview" alt="Document preview" />
+                                            </div>
+                                            <div class="document-info">
+                                                <p><strong>Number:</strong> {{ doc.number }}</p>
+                                                <p><strong>File:</strong> {{ doc.file?.name }}</p>
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button mat-raised-button color="primary" matStepperNext
+                                    [disabled]="uploadedDocuments.length === 0">
+                                    Next
+                                    <mat-icon>arrow_forward</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-step>
+
+                    <!-- Step 2: Live Photo -->
+                    <mat-step label="Live Photo">
+                        <div class="step-content">
+                            <h3 class="step-title">
+                                <mat-icon>photo_camera</mat-icon>
+                                Capture Live Photo
+                            </h3>
+
+                            <div class="photo-capture-container">
+                                <!-- Camera View -->
+                                <div class="camera-view" *ngIf="!capturedPhoto">
+                                    <video #videoElement autoplay playsinline *ngIf="isCameraActive"
+                                        class="video-element"></video>
+
+                                    <div class="camera-placeholder" *ngIf="!isCameraActive">
+                                        <mat-icon>photo_camera</mat-icon>
+                                        <p>Click "Start Camera" to begin</p>
+                                    </div>
+
+                                    <div class="camera-controls">
+                                        <button mat-raised-button color="primary" (click)="startCamera()"
+                                            *ngIf="!isCameraActive">
+                                            <mat-icon>videocam</mat-icon>
+                                            Start Camera
+                                        </button>
+                                        <button mat-raised-button color="accent" (click)="capturePhoto()"
+                                            *ngIf="isCameraActive">
+                                            <mat-icon>camera</mat-icon>
+                                            Capture Photo
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Captured Photo Preview -->
+                                <div class="photo-preview" *ngIf="capturedPhoto">
+                                    <img [src]="capturedPhoto" alt="Captured photo" />
+                                    <div class="photo-actions">
+                                        <button mat-raised-button color="warn" (click)="retakePhoto()">
+                                            <mat-icon>refresh</mat-icon>
+                                            Retake Photo
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Hidden Canvas -->
+                                <canvas #photoCanvas style="display: none;"></canvas>
+                            </div>
+
+                            <div class="step-actions">
+                                <button mat-stroked-button matStepperPrevious>
+                                    <mat-icon>arrow_back</mat-icon>
+                                    Back
+                                </button>
+                                <button mat-raised-button color="primary" matStepperNext [disabled]="!capturedPhoto"
+                                    (click)="initSignaturePad()">
+                                    Next
+                                    <mat-icon>arrow_forward</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-step>
+
+                    <!-- Step 3: Signature -->
+                    <mat-step label="Signature">
+                        <div class="step-content">
+                            <h3 class="step-title">
+                                <mat-icon>draw</mat-icon>
+                                Digital Signature
+                            </h3>
+
+                            <div class="signature-container">
+                                <p class="signature-instruction">Please sign in the box below using your mouse or
+                                    touchscreen</p>
+
+                                <div class="signature-pad-wrapper">
+                                    <canvas #signatureCanvas class="signature-canvas" width="600" height="200"
+                                        (mousedown)="startDrawing($event)" (mousemove)="draw($event)"
+                                        (mouseup)="stopDrawing()" (mouseleave)="stopDrawing()"
+                                        (touchstart)="startDrawing($event)" (touchmove)="draw($event)"
+                                        (touchend)="stopDrawing()"></canvas>
+                                </div>
+
+                                <div class="signature-actions">
+                                    <button mat-stroked-button color="warn" (click)="clearSignature()">
+                                        <mat-icon>clear</mat-icon>
+                                        Clear Signature
+                                    </button>
+                                </div>
+
+                                <div class="signature-preview" *ngIf="signatureData">
+                                    <p class="success-text">
+                                        <mat-icon>check_circle</mat-icon>
+                                        Signature captured successfully
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button mat-stroked-button matStepperPrevious>
+                                    <mat-icon>arrow_back</mat-icon>
+                                    Back
+                                </button>
+                                <button mat-raised-button color="primary" (click)="submitVerification()"
+                                    [disabled]="!signatureData || isSubmitting">
+                                    <mat-icon *ngIf="!isSubmitting">send</mat-icon>
+                                    <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
+                                    {{ isSubmitting ? 'Submitting...' : 'Submit Verification' }}
+                                </button>
+                            </div>
+                        </div>
+                    </mat-step>
+                </mat-stepper>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

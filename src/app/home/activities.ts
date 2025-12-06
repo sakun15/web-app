@@ -1,4 +1,9 @@
 const activities: any[] = [
+  { activity: 'loan calculator', path: '/loan-calculator' },
+  { activity: 'loan application', path: '/loan-application' },
+  { activity: 'id verification', path: '/id-verification' },
+  { activity: 'loan progress', path: '/loan-progress' },
+  { activity: 'loan status', path: '/loan-status' },
   { activity: 'client', path: '/clients' },
   { activity: 'groups', path: '/groups' },
   { activity: 'centers', path: '/centers' },

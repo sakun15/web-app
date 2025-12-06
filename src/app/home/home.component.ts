@@ -19,6 +19,7 @@ import { ConfigurationWizardService } from '../configuration-wizard/configuratio
 
 /** Custom Components */
 import { NextStepDialogComponent } from '../configuration-wizard/next-step-dialog/next-step-dialog.component';
+import { WelcomeDialogComponent } from './welcome-dialog/welcome-dialog.component';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardImage } from '@angular/material/card';
 import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
@@ -79,7 +80,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private configurationWizardService: ConfigurationWizardService,
     private popoverService: PopoverService
-  ) {}
+  ) { }
 
   /**
    * Sets the username of the authenticated user.
@@ -92,6 +93,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (!this.authenticationService.hasDialogBeenShown()) {
       this.dialog.open(WarningDialogComponent);
       this.authenticationService.showDialog();
+
+      // Show welcome dialog after a short delay
+      setTimeout(() => {
+        this.dialog.open(WelcomeDialogComponent, {
+          data: { username: this.username },
+          panelClass: 'welcome-dialog-container',
+          disableClose: false,
+          width: '600px',
+          maxWidth: '95vw'
+        });
+      }, 500);
     }
   }
 

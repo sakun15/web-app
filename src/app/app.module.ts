@@ -61,8 +61,14 @@ import { CallbackComponent } from './zitadel/callback/callback.component';
 
 export class CustomMissingTranslationHandler implements MissingTranslationHandler {
   handle(params: MissingTranslationHandlerParams): string {
-    // Remove the 'labels.catalogs.' prefix and return the fallback value
-    return params.key.replace('labels.catalogs.', '');
+    // Remove the 'labels.' prefix and return the last part of the key
+    const key = params.key;
+    if (key.startsWith('labels.')) {
+      // Return the last part after the final dot
+      const parts = key.split('.');
+      return parts[parts.length - 1];
+    }
+    return key;
   }
 }
 
@@ -133,4 +139,4 @@ export function HttpLoaderFactory(http: HttpClient) {
     }
   ]
 })
-export class AppModule {}
+export class AppModule { }

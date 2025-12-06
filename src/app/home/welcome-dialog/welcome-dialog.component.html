@@ -1,0 +1,49 @@
+<div class="welcome-dialog">
+    <div class="welcome-header">
+        <div class="welcome-icon-container">
+            <mat-icon class="welcome-icon">celebration</mat-icon>
+        </div>
+        <button mat-icon-button class="close-button" (click)="onClose()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="welcome-content">
+        <h1 class="welcome-title">Welcome Back, {{ username }}! 🎉</h1>
+
+        <p class="welcome-tagline">
+            "Empowering Financial Inclusion, One Loan at a Time"
+        </p>
+
+        <div class="welcome-message">
+            <p>We're thrilled to have you here. Your journey to making a difference in financial services starts now.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <mat-icon>account_balance</mat-icon>
+                <span>Manage Loans</span>
+            </div>
+            <div class="feature-item">
+                <mat-icon>people</mat-icon>
+                <span>Track Clients</span>
+            </div>
+            <div class="feature-item">
+                <mat-icon>analytics</mat-icon>
+                <span>View Reports</span>
+            </div>
+            <div class="feature-item">
+                <mat-icon>savings</mat-icon>
+                <span>Monitor Savings</span>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button mat-raised-button color="primary" (click)="onClose()">
+                <mat-icon>dashboard</mat-icon>
+                Go to Dashboard
+            </button>
+        </div>
+    </div>
+</div>

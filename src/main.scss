@@ -1,26 +1,142 @@
 // Version 1
 
-/*
- * Entry point of global application style.
- * Component-specific style should not go here and be included directly as part of the components.
- */
-
-// Import Default Theme for MifosX
+// Import Default Theme for MifosX (MUST BE FIRST)
 @use 'theme/mifosx-theme';
 @use 'theme/pictonblue-yellowgreen' as *;
 @use 'theme/indigo-pink' as *;
 @use 'theme/pink-bluegrey' as *;
 @use 'theme/deeppurple-amber' as *;
 @use 'theme/purple-green.scss' as *;
-
-// Global Imports
-
-/* You can add global styles to this file, and also import other style files */
 @use 'assets/styles/helper';
+
+/*
+ * Entry point of global application style.
+ * Component-specific style should not go here and be included directly as part of the components.
+ */
+
+// ========================================
+// DEEP NAVY BLUE THEME VARIABLES
+// ========================================
+
+:root {
+  // Navy Blue Gradients
+  --primary-gradient: linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%);
+  --accent-gradient: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+  --success-gradient: linear-gradient(135deg, #2d7a8e 0%, #1a5568 100%);
+  --info-gradient: linear-gradient(135deg, #4a7ba7 0%, #2c5f8d 100%);
+  --warning-gradient: linear-gradient(135deg, #5a7fa3 0%, #3d5a7a 100%);
+
+  // Primary Navy Colors
+  --primary-color: #1e3a5f;
+  --primary-dark: #0f1c2e;
+  --primary-light: #2c5282;
+  --accent-color: #4a7ba7;
+  --accent-dark: #2c5f8d;
+
+  // Success Colors (Ocean Teal)
+  --success-color: #2d7a8e;
+  --success-dark: #1a5568;
+
+  // Neutral Navy Tones
+  --background-color: #0a1628;
+  --background-alt: #0f1e33;
+  --card-background: #1a2942;
+  --card-background-alt: #1e3a5f;
+  --text-primary: #e8eef5;
+  --text-secondary: #b8c5d6;
+  --text-muted: #8a9bb0;
+  --border-color: #2c4a6b;
+  --border-dark: #1e3a5f;
+
+  // Shadows & Effects (Navy Tones)
+  --card-shadow: 0 10px 40px rgba(10, 22, 40, 0.5);
+  --card-shadow-hover: 0 15px 50px rgba(10, 22, 40, 0.7);
+  --button-shadow: 0 5px 15px rgba(30, 58, 95, 0.6);
+
+  // Border Radius
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+
+  // Transitions
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+// ========================================
+// GLOBAL NAVY THEME STYLING
+// ========================================
+
+// Body Background
+body {
+  background: var(--background-color);
+  font-family: 'Inter', 'Roboto', sans-serif;
+  color: var(--text-primary);
+}
+
+// Modern Card Styling
+mat-card,
+.mat-mdc-card {
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--card-shadow) !important;
+  transition: all var(--transition-normal);
+  background: var(--card-background) !important;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary) !important;
+
+  &:hover {
+    box-shadow: var(--card-shadow-hover) !important;
+    border-color: var(--border-dark);
+  }
+}
+
+// Modern Button Styling
+.mat-mdc-raised-button.mat-primary {
+  background: var(--primary-gradient) !important;
+  color: #ffffff !important;
+  transition: all var(--transition-normal);
+  border: none;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow) !important;
+  }
+}
+
+.mat-mdc-button.mat-primary {
+  color: var(--accent-color) !important;
+}
+
+// Modern Form Fields
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: var(--background-alt);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
+    border: 1px solid var(--border-color);
+
+    &:hover {
+      background-color: var(--card-background);
+      border-color: var(--accent-color);
+    }
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent;
+  }
+
+  label,
+  input,
+  textarea {
+    color: var(--text-primary) !important;
+  }
+}
 
 .scrollbar-styling {
   scrollbar-width: thin;
-  scrollbar-color: #889 #f1f1f1;
+  scrollbar-color: var(--primary-color) var(--background-alt);
 }
 
 ::-webkit-scrollbar {
@@ -28,14 +144,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--background-alt);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #889;
+  background: var(--primary-gradient);
+  border-radius: 10px;
 
   &:hover {
-    background: #555;
+    background: var(--primary-dark);
   }
 }
 
@@ -73,7 +191,7 @@
 }
 
 .responsive-column {
-  @media (width <= 768px) {
+  @media (width <=768px) {
     flex-direction: column;
   }
 }
@@ -161,13 +279,13 @@
 }
 
 .layout-gt-sm-row {
-  @media (width >= 600px) {
+  @media (width >=600px) {
     flex-direction: row;
   }
 }
 
 .align-gt-sm-start-center {
-  @media (width >= 600px) {
+  @media (width >=600px) {
     justify-content: flex-start;
     align-items: center;
   }
@@ -295,7 +413,7 @@
   flex: 0 0 48%;
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .hide-lt-md {
     display: none !important;
   }
@@ -368,21 +486,21 @@
   flex: 0 0 96%;
 }
 
-@media screen and (width <= 599px) {
+@media screen and (width <=599px) {
   .flex-xs-15 {
     flex: 0 0 15%;
     max-width: 15%;
   }
 }
 
-@media screen and (width >= 600px) and (width <= 959px) {
+@media screen and (width >=600px) and (width <=959px) {
   .flex-sm-10 {
     flex: 0 0 10%;
     max-width: 10%;
   }
 }
 
-@media screen and (width >= 960px) and (width <= 1279px) {
+@media screen and (width >=960px) and (width <=1279px) {
   .flex-md-5 {
     flex: 0 0 5%;
     max-width: 5%;
@@ -390,7 +508,7 @@
 }
 
 .hide-lt-sm {
-  @media (width <= 599px) {
+  @media (width <=599px) {
     display: none !important;
   }
 }
@@ -474,24 +592,24 @@
 }
 
 .flex-gt-sm-30 {
-  @media (width >= 600px) {
+  @media (width >=600px) {
     flex: 1 0 30%;
   }
 }
 
-@media (width <= 1199px) {
+@media (width <=1199px) {
   .hide-lt-lg {
     display: none !important;
   }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .flex-25 {
     flex: 0 0 50%;
   }
 }
 
-@media (width <= 599px) {
+@media (width <=599px) {
   .layout-xs-column {
     flex-direction: column;
   }
@@ -510,19 +628,19 @@
 }
 
 .layout-lt-md-column {
-  @media (width <= 768px) {
+  @media (width <=768px) {
     flex-direction: column;
   }
 }
 
 .layout-column.lt-md {
-  @media (width <= 599px) {
+  @media (width <=599px) {
     flex-direction: column !important;
   }
 }
 
 .responsive-flex-full {
-  @media (width <= 768px) {
+  @media (width <=768px) {
     flex: 0 0 100% !important;
   }
 }
@@ -543,19 +661,19 @@
   }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .flex-lt-md-50 {
     flex: 0 0 50%;
   }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .flex-50-lt-md {
     flex: 0 0 50%;
   }
 }
 
-@media (width <= 599px) {
+@media (width <=599px) {
   .layout-column-xs {
     flex-direction: column !important;
   }

@@ -1,0 +1,456 @@
+.progress-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+}
+
+.progress-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+// Header Card
+.header-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+
+    mat-card-header {
+        padding: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .main-title {
+        font-size: 2rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+
+        @media (max-width: 768px) {
+            font-size: 1.5rem;
+        }
+    }
+
+    .title-icon {
+        font-size: 2.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    mat-card-content {
+        padding: 1.5rem 2rem;
+    }
+}
+
+// Application Info
+.application-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .value {
+            font-size: 1.1rem;
+            color: #495057;
+            font-weight: 600;
+        }
+    }
+}
+
+// Progress Card
+.progress-card {
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+    margin-bottom: 2rem;
+
+    .progress-overview {
+        padding: 1rem;
+
+        h3 {
+            color: #495057;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .progress-bar-container {
+            position: relative;
+            margin-bottom: 1rem;
+
+            mat-progress-bar {
+                height: 12px;
+                border-radius: 6px;
+            }
+
+            .progress-text {
+                display: block;
+                text-align: center;
+                margin-top: 0.5rem;
+                font-weight: 600;
+                color: #667eea;
+                font-size: 1.1rem;
+            }
+        }
+
+        .estimated-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6c757d;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+
+            mat-icon {
+                font-size: 1.2rem;
+                width: 1.2rem;
+                height: 1.2rem;
+            }
+        }
+    }
+}
+
+// Decision Cards
+.decision-card {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    border-radius: 16px !important;
+    margin-bottom: 2rem;
+    animation: slideIn 0.5s ease;
+
+    .decision-content {
+        text-align: center;
+        padding: 2rem;
+
+        .decision-icon {
+            font-size: 5rem;
+            width: 5rem;
+            height: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .decision-details {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+
+            p {
+                margin: 0.5rem 0;
+                font-size: 1rem;
+            }
+
+            ul {
+                margin: 0.5rem 0;
+                padding-left: 1.5rem;
+
+                li {
+                    margin: 0.25rem 0;
+                }
+            }
+        }
+
+        .decision-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    }
+}
+
+.approved-card {
+    background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+
+    .decision-icon {
+        color: #2d7a3e;
+    }
+
+    h2 {
+        color: #2d7a3e;
+    }
+}
+
+.denied-card {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+
+    .decision-icon {
+        color: #d63031;
+    }
+
+    h2 {
+        color: #d63031;
+    }
+}
+
+// Stages Card
+.stages-card {
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+    margin-bottom: 2rem;
+
+    mat-card-header {
+        padding: 1.5rem 1.5rem 0;
+    }
+
+    mat-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    mat-card-content {
+        padding: 2rem 1.5rem;
+    }
+}
+
+// Stages Timeline
+.stages-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.stage-item {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+
+    .stage-indicator {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .stage-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e9ecef;
+            border: 3px solid #e9ecef;
+            transition: all 0.3s ease;
+
+            .stage-icon {
+                font-size: 2rem;
+                width: 2rem;
+                height: 2rem;
+                color: #6c757d;
+            }
+        }
+
+        .stage-line {
+            width: 3px;
+            flex: 1;
+            min-height: 60px;
+            background: #e9ecef;
+            transition: all 0.3s ease;
+        }
+    }
+
+    .stage-content {
+        flex: 1;
+        padding-bottom: 2rem;
+
+        .stage-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #495057;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .stage-description {
+            color: #6c757d;
+            margin: 0 0 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .stage-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #667eea;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+
+            mat-icon {
+                font-size: 1rem;
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+
+        .stage-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+
+            mat-icon {
+                font-size: 1rem;
+                width: 1rem;
+                height: 1rem;
+                animation: pulse 1.5s ease-in-out infinite;
+            }
+        }
+    }
+
+    // Completed Stage
+    &.completed {
+        .stage-icon-wrapper {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-color: #11998e;
+
+            .stage-icon {
+                color: white;
+            }
+        }
+
+        .stage-line {
+            background: linear-gradient(180deg, #11998e 0%, #38ef7d 100%);
+        }
+    }
+
+    // Active Stage
+    &.active {
+        .stage-icon-wrapper {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            animation: pulse-border 2s ease-in-out infinite;
+
+            .stage-icon {
+                color: white;
+            }
+        }
+    }
+
+    // Pending Stage
+    &.pending {
+        opacity: 0.6;
+    }
+}
+
+// Actions Card
+.actions-card {
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+
+    .actions-content {
+        padding: 1rem;
+
+        h3 {
+            color: #495057;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+
+            button {
+                padding: 0.75rem 1.5rem;
+                font-weight: 600;
+
+                mat-icon {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes pulse-border {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .application-info {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        grid-template-columns: 1fr !important;
+    }
+
+    .decision-actions {
+        flex-direction: column;
+
+        button {
+            width: 100%;
+        }
+    }
+}

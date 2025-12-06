@@ -1,0 +1,523 @@
+<div class="loan-application-container">
+    <div class="application-wrapper">
+        <!-- Header -->
+        <mat-card class="header-card">
+            <mat-card-header>
+                <mat-card-title class="main-title">
+                    <mat-icon class="title-icon">description</mat-icon>
+                    Loan Application Form
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="subtitle">Complete your loan application in 3 simple steps</p>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Success Message -->
+        <mat-card class="success-card" *ngIf="isSubmitted">
+            <mat-card-content>
+                <div class="success-content">
+                    <mat-icon class="success-icon">check_circle</mat-icon>
+                    <h2>Application Submitted Successfully!</h2>
+                    <p>Your loan application has been received. Our team will review it and contact you within 2-3
+                        business days.</p>
+                    <div class="success-actions">
+                        <button mat-raised-button color="primary" (click)="resetApplication()">
+                            <mat-icon>add</mat-icon>
+                            New Application
+                        </button>
+                        <button mat-stroked-button color="accent" (click)="goToCalculator()">
+                            <mat-icon>calculate</mat-icon>
+                            Loan Calculator
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Application Form Stepper -->
+        <mat-card class="form-card" *ngIf="!isSubmitted">
+            <mat-card-content>
+                <mat-stepper #stepper linear>
+                    <!-- Step 1: Personal Details -->
+                    <mat-step [stepControl]="personalDetailsForm" label="Personal Details">
+                        <form [formGroup]="personalDetailsForm" class="step-form">
+                            <h3 class="step-title">
+                                <mat-icon>person</mat-icon>
+                                Personal Information
+                            </h3>
+
+                            <div class="form-grid">
+                                <!-- Name Fields -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput formControlName="firstName" placeholder="Enter first name" />
+                                    <mat-icon matSuffix>person</mat-icon>
+                                    <mat-error *ngIf="personalDetailsForm.get('firstName')?.hasError('required')">
+                                        First name is required
+                                    </mat-error>
+                                    <mat-error *ngIf="personalDetailsForm.get('firstName')?.hasError('minlength')">
+                                        Minimum 2 characters required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Middle Name</mat-label>
+                                    <input matInput formControlName="middleName"
+                                        placeholder="Enter middle name (optional)" />
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput formControlName="lastName" placeholder="Enter last name" />
+                                    <mat-icon matSuffix>person</mat-icon>
+                                    <mat-error *ngIf="personalDetailsForm.get('lastName')?.hasError('required')">
+                                        Last name is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <!-- Date of Birth and Age -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Date of Birth</mat-label>
+                                    <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth"
+                                        placeholder="Select date" />
+                                    <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #dobPicker></mat-datepicker>
+                                    <mat-error *ngIf="personalDetailsForm.get('dateOfBirth')?.hasError('required')">
+                                        Date of birth is required
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Age</mat-label>
+                                    <input matInput formControlName="age" readonly />
+                                    <mat-icon matSuffix>cake</mat-icon>
+                                </mat-form-field>
+
+                                <!-- Gender and Marital Status -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Gender</mat-label>
+                                    <mat-select formControlName="gender" placeholder="Select gender">
+                                        <mat-option *ngFor="let gender of genderOptions" [value]="gender.value">
+                                            {{ gender.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon matSuffix>wc</mat-icon>
+                                    <mat-error>Gender is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Marital Status</mat-label>
+                                    <mat-select formControlName="maritalStatus" placeholder="Select status">
+                                        <mat-option *ngFor="let status of maritalStatusOptions" [value]="status.value">
+                                            {{ status.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon matSuffix>favorite</mat-icon>
+                                    <mat-error>Marital status is required</mat-error>
+                                </mat-form-field>
+
+                                <!-- Contact Details -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Email Address</mat-label>
+                                    <input matInput type="email" formControlName="email"
+                                        placeholder="your.email@example.com" />
+                                    <mat-icon matSuffix>email</mat-icon>
+                                    <mat-error *ngIf="personalDetailsForm.get('email')?.hasError('required')">
+                                        Email is required
+                                    </mat-error>
+                                    <mat-error *ngIf="personalDetailsForm.get('email')?.hasError('email')">
+                                        Please enter a valid email
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Mobile Number</mat-label>
+                                    <input matInput type="tel" formControlName="mobileNumber"
+                                        placeholder="10-digit mobile number" />
+                                    <mat-icon matSuffix>phone</mat-icon>
+                                    <mat-error *ngIf="personalDetailsForm.get('mobileNumber')?.hasError('required')">
+                                        Mobile number is required
+                                    </mat-error>
+                                    <mat-error *ngIf="personalDetailsForm.get('mobileNumber')?.hasError('pattern')">
+                                        Please enter a valid 10-digit number
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Alternate Mobile Number</mat-label>
+                                    <input matInput type="tel" formControlName="alternateMobileNumber"
+                                        placeholder="Optional" />
+                                    <mat-icon matSuffix>phone</mat-icon>
+                                    <mat-error>Please enter a valid 10-digit number</mat-error>
+                                </mat-form-field>
+
+                                <!-- Address Details -->
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Address</mat-label>
+                                    <textarea matInput formControlName="address" rows="3"
+                                        placeholder="Enter complete address"></textarea>
+                                    <mat-icon matSuffix>home</mat-icon>
+                                    <mat-error *ngIf="personalDetailsForm.get('address')?.hasError('required')">
+                                        Address is required
+                                    </mat-error>
+                                    <mat-error *ngIf="personalDetailsForm.get('address')?.hasError('minlength')">
+                                        Address must be at least 10 characters
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>City</mat-label>
+                                    <input matInput formControlName="city" placeholder="Enter city" />
+                                    <mat-icon matSuffix>location_city</mat-icon>
+                                    <mat-error>City is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>State</mat-label>
+                                    <input matInput formControlName="state" placeholder="Enter state" />
+                                    <mat-icon matSuffix>map</mat-icon>
+                                    <mat-error>State is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Pincode</mat-label>
+                                    <input matInput formControlName="pincode" placeholder="6-digit pincode" />
+                                    <mat-icon matSuffix>pin_drop</mat-icon>
+                                    <mat-error *ngIf="personalDetailsForm.get('pincode')?.hasError('required')">
+                                        Pincode is required
+                                    </mat-error>
+                                    <mat-error *ngIf="personalDetailsForm.get('pincode')?.hasError('pattern')">
+                                        Please enter a valid 6-digit pincode
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="step-actions">
+                                <button mat-raised-button color="primary" matStepperNext
+                                    [disabled]="!personalDetailsForm.valid">
+                                    Next
+                                    <mat-icon>arrow_forward</mat-icon>
+                                </button>
+                            </div>
+                        </form>
+                    </mat-step>
+
+                    <!-- Step 2: Financial Details -->
+                    <mat-step [stepControl]="financialDetailsForm" label="Financial Details">
+                        <form [formGroup]="financialDetailsForm" class="step-form">
+                            <h3 class="step-title">
+                                <mat-icon>account_balance_wallet</mat-icon>
+                                Financial Information
+                            </h3>
+
+                            <div class="form-grid">
+                                <!-- Education and Employment -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Highest Qualification</mat-label>
+                                    <mat-select formControlName="qualification" placeholder="Select qualification">
+                                        <mat-option *ngFor="let qual of qualificationOptions" [value]="qual.value">
+                                            {{ qual.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon matSuffix>school</mat-icon>
+                                    <mat-error>Qualification is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Employment Type</mat-label>
+                                    <mat-select formControlName="employmentType" placeholder="Select employment type">
+                                        <mat-option *ngFor="let type of employmentTypeOptions" [value]="type.value">
+                                            {{ type.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon matSuffix>work</mat-icon>
+                                    <mat-error>Employment type is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Employer/Company Name</mat-label>
+                                    <input matInput formControlName="employerName" placeholder="Enter employer name" />
+                                    <mat-icon matSuffix>business</mat-icon>
+                                    <mat-error>Employer name is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Designation/Position</mat-label>
+                                    <input matInput formControlName="designation" placeholder="Enter designation" />
+                                    <mat-icon matSuffix>badge</mat-icon>
+                                    <mat-error>Designation is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Years of Experience</mat-label>
+                                    <input matInput type="number" formControlName="yearsOfExperience"
+                                        placeholder="Enter years" />
+                                    <mat-icon matSuffix>timeline</mat-icon>
+                                    <mat-error>Years of experience is required</mat-error>
+                                </mat-form-field>
+
+                                <!-- Income Details -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Monthly Income</mat-label>
+                                    <input matInput type="number" formControlName="monthlyIncome"
+                                        placeholder="Enter monthly income" />
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <mat-icon matSuffix>payments</mat-icon>
+                                    <mat-error *ngIf="financialDetailsForm.get('monthlyIncome')?.hasError('required')">
+                                        Monthly income is required
+                                    </mat-error>
+                                    <mat-error *ngIf="financialDetailsForm.get('monthlyIncome')?.hasError('min')">
+                                        Minimum income should be ₹1,000
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Additional Income (Optional)</mat-label>
+                                    <input matInput type="number" formControlName="additionalIncome"
+                                        placeholder="Enter additional income" />
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <mat-icon matSuffix>add_circle</mat-icon>
+                                </mat-form-field>
+
+                                <!-- Existing Loans -->
+                                <div class="full-width checkbox-field">
+                                    <mat-checkbox formControlName="existingLoans">
+                                        Do you have any existing loans?
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline"
+                                    *ngIf="financialDetailsForm.get('existingLoans')?.value">
+                                    <mat-label>Existing Loan Amount</mat-label>
+                                    <input matInput type="number" formControlName="existingLoanAmount"
+                                        placeholder="Total existing loan amount" />
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <mat-icon matSuffix>account_balance</mat-icon>
+                                </mat-form-field>
+
+                                <!-- Identity Documents -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>PAN Number</mat-label>
+                                    <input matInput formControlName="panNumber" placeholder="ABCDE1234F"
+                                        style="text-transform: uppercase" />
+                                    <mat-icon matSuffix>credit_card</mat-icon>
+                                    <mat-error *ngIf="financialDetailsForm.get('panNumber')?.hasError('required')">
+                                        PAN number is required
+                                    </mat-error>
+                                    <mat-error *ngIf="financialDetailsForm.get('panNumber')?.hasError('pattern')">
+                                        Please enter a valid PAN number
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Aadhar Number</mat-label>
+                                    <input matInput formControlName="aadharNumber"
+                                        placeholder="12-digit Aadhar number" />
+                                    <mat-icon matSuffix>fingerprint</mat-icon>
+                                    <mat-error *ngIf="financialDetailsForm.get('aadharNumber')?.hasError('required')">
+                                        Aadhar number is required
+                                    </mat-error>
+                                    <mat-error *ngIf="financialDetailsForm.get('aadharNumber')?.hasError('pattern')">
+                                        Please enter a valid 12-digit Aadhar number
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <!-- Document Uploads -->
+                                <div class="full-width file-upload-section">
+                                    <h4 class="upload-section-title">
+                                        <mat-icon>attach_file</mat-icon>
+                                        Required Documents
+                                    </h4>
+
+                                    <div class="file-upload-grid">
+                                        <!-- Bank Statement Upload -->
+                                        <div class="file-upload-field">
+                                            <label class="file-upload-label">
+                                                <mat-icon>account_balance</mat-icon>
+                                                <span class="label-text">Bank Statement (Last 6 months)</span>
+                                                <span class="required-indicator">*</span>
+                                            </label>
+                                            <div class="file-input-wrapper">
+                                                <input type="file" #bankStatementInput
+                                                    (change)="onBankStatementUpload($event)"
+                                                    accept=".pdf,.jpg,.jpeg,.png" hidden />
+                                                <button mat-raised-button type="button" class="file-upload-button"
+                                                    (click)="bankStatementInput.click()">
+                                                    <mat-icon>cloud_upload</mat-icon>
+                                                    Choose File
+                                                </button>
+                                                <span class="file-name" *ngIf="bankStatementFileName">
+                                                    <mat-icon class="file-icon">description</mat-icon>
+                                                    {{ bankStatementFileName }}
+                                                </span>
+                                                <span class="file-name placeholder" *ngIf="!bankStatementFileName">
+                                                    No file chosen
+                                                </span>
+                                            </div>
+                                            <mat-error
+                                                *ngIf="financialDetailsForm.get('bankStatement')?.hasError('required') && financialDetailsForm.get('bankStatement')?.touched"
+                                                class="file-error">
+                                                Bank statement is required
+                                            </mat-error>
+                                        </div>
+
+                                        <!-- Salary Slip Upload -->
+                                        <div class="file-upload-field">
+                                            <label class="file-upload-label">
+                                                <mat-icon>receipt_long</mat-icon>
+                                                <span class="label-text">Salary Slip (Latest 3 months)</span>
+                                                <span class="required-indicator">*</span>
+                                            </label>
+                                            <div class="file-input-wrapper">
+                                                <input type="file" #salarySlipInput
+                                                    (change)="onSalarySlipUpload($event)" accept=".pdf,.jpg,.jpeg,.png"
+                                                    hidden />
+                                                <button mat-raised-button type="button" class="file-upload-button"
+                                                    (click)="salarySlipInput.click()">
+                                                    <mat-icon>cloud_upload</mat-icon>
+                                                    Choose File
+                                                </button>
+                                                <span class="file-name" *ngIf="salarySlipFileName">
+                                                    <mat-icon class="file-icon">description</mat-icon>
+                                                    {{ salarySlipFileName }}
+                                                </span>
+                                                <span class="file-name placeholder" *ngIf="!salarySlipFileName">
+                                                    No file chosen
+                                                </span>
+                                            </div>
+                                            <mat-error
+                                                *ngIf="financialDetailsForm.get('salarySlip')?.hasError('required') && financialDetailsForm.get('salarySlip')?.touched"
+                                                class="file-error">
+                                                Salary slip is required
+                                            </mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button mat-stroked-button matStepperPrevious>
+                                    <mat-icon>arrow_back</mat-icon>
+                                    Back
+                                </button>
+                                <button mat-raised-button color="primary" matStepperNext
+                                    [disabled]="!financialDetailsForm.valid">
+                                    Next
+                                    <mat-icon>arrow_forward</mat-icon>
+                                </button>
+                            </div>
+                        </form>
+                    </mat-step>
+
+                    <!-- Step 3: Loan Details -->
+                    <mat-step [stepControl]="loanDetailsForm" label="Loan Details">
+                        <form [formGroup]="loanDetailsForm" class="step-form">
+                            <h3 class="step-title">
+                                <mat-icon>request_quote</mat-icon>
+                                Loan Requirements
+                            </h3>
+
+                            <div class="form-grid">
+                                <!-- Loan Type -->
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Loan Type</mat-label>
+                                    <mat-select formControlName="loanType" placeholder="Select loan type">
+                                        <mat-option *ngFor="let type of loanTypes" [value]="type.value">
+                                            <div class="loan-type-option">
+                                                <mat-icon class="loan-type-icon">{{ type.icon }}</mat-icon>
+                                                <span>{{ type.label }} ({{ type.interestRate }}% p.a.)</span>
+                                            </div>
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-icon matSuffix>category</mat-icon>
+                                    <mat-error>Loan type is required</mat-error>
+                                </mat-form-field>
+
+                                <!-- Loan Amount and Tenure -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Loan Amount</mat-label>
+                                    <input matInput type="number" formControlName="loanAmount"
+                                        placeholder="Enter loan amount" />
+                                    <span matPrefix>₹&nbsp;</span>
+                                    <mat-icon matSuffix>account_balance_wallet</mat-icon>
+                                    <mat-error *ngIf="loanDetailsForm.get('loanAmount')?.hasError('required')">
+                                        Loan amount is required
+                                    </mat-error>
+                                    <mat-error *ngIf="loanDetailsForm.get('loanAmount')?.hasError('min')">
+                                        Minimum loan amount is ₹10,000
+                                    </mat-error>
+                                    <mat-error *ngIf="loanDetailsForm.get('loanAmount')?.hasError('max')">
+                                        Maximum loan amount is ₹10,00,00,000
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Loan Tenure (Months)</mat-label>
+                                    <input matInput type="number" formControlName="loanTenure"
+                                        placeholder="Enter tenure in months" />
+                                    <mat-icon matSuffix>schedule</mat-icon>
+                                    <mat-error *ngIf="loanDetailsForm.get('loanTenure')?.hasError('required')">
+                                        Loan tenure is required
+                                    </mat-error>
+                                    <mat-error *ngIf="loanDetailsForm.get('loanTenure')?.hasError('min')">
+                                        Minimum tenure is 6 months
+                                    </mat-error>
+                                    <mat-error *ngIf="loanDetailsForm.get('loanTenure')?.hasError('max')">
+                                        Maximum tenure is 360 months
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Interest Rate</mat-label>
+                                    <input matInput formControlName="interestRate" readonly />
+                                    <span matSuffix>% p.a.</span>
+                                    <mat-icon matSuffix>percent</mat-icon>
+                                </mat-form-field>
+
+                                <!-- Loan Purpose -->
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Purpose of Loan</mat-label>
+                                    <textarea matInput formControlName="purpose" rows="4"
+                                        placeholder="Please describe the purpose of this loan"></textarea>
+                                    <mat-icon matSuffix>description</mat-icon>
+                                    <mat-error *ngIf="loanDetailsForm.get('purpose')?.hasError('required')">
+                                        Purpose is required
+                                    </mat-error>
+                                    <mat-error *ngIf="loanDetailsForm.get('purpose')?.hasError('minlength')">
+                                        Please provide at least 20 characters
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <!-- Terms and Conditions -->
+                                <div class="full-width checkbox-field">
+                                    <mat-checkbox formControlName="agreeToTerms">
+                                        I agree to the <a href="#" target="_blank">terms and conditions</a> and
+                                        authorize the verification of information provided
+                                    </mat-checkbox>
+                                    <mat-error
+                                        *ngIf="loanDetailsForm.get('agreeToTerms')?.hasError('required') && loanDetailsForm.get('agreeToTerms')?.touched">
+                                        You must agree to the terms and conditions
+                                    </mat-error>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button mat-stroked-button matStepperPrevious>
+                                    <mat-icon>arrow_back</mat-icon>
+                                    Back
+                                </button>
+                                <button mat-raised-button color="primary" (click)="submitApplication()"
+                                    [disabled]="!loanDetailsForm.valid || isSubmitting">
+                                    <mat-icon *ngIf="!isSubmitting">send</mat-icon>
+                                    <mat-icon *ngIf="isSubmitting" class="spinning">hourglass_empty</mat-icon>
+                                    {{ isSubmitting ? 'Submitting...' : 'Submit Application' }}
+                                </button>
+                            </div>
+                        </form>
+                    </mat-step>
+                </mat-stepper>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

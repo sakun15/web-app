@@ -1,0 +1,420 @@
+.loan-calculator-container {
+  min-height: 100vh;
+  background: #0a1628;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.calculator-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Header Card Styles
+.header-card {
+  background: #1a2942;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 40px rgba(10, 22, 40, 0.5);
+  border-radius: 16px !important;
+  overflow: hidden;
+  border: 1px solid #2c4a6b;
+
+  mat-card-header {
+    padding: 2rem;
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f1c2e 100%);
+    color: white;
+  }
+
+  .main-title {
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .title-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  mat-card-content {
+    padding: 1.5rem 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #b8c5d6;
+    margin: 0;
+  }
+}
+
+// Calculator Grid Layout
+.calculator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Input Card Styles
+.input-card {
+  background: #1a2942;
+  box-shadow: 0 10px 40px rgba(10, 22, 40, 0.5);
+  border-radius: 16px !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #2c4a6b;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(10, 22, 40, 0.7);
+  }
+
+  mat-card-header {
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #4a7ba7;
+  }
+
+  mat-card-content {
+    padding: 1.5rem;
+  }
+}
+
+// Form Styles
+.loan-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  &.mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      background-color: #0f1e33;
+      border-radius: 8px;
+      border: 1px solid #2c4a6b;
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+      background-color: transparent;
+    }
+
+    label,
+    input {
+      color: #e8eef5 !important;
+    }
+  }
+}
+
+// Loan Type Selector Styles
+.loan-type-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+
+  .loan-type-icon {
+    color: #4a7ba7;
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .loan-type-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .loan-type-label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #e8eef5;
+    }
+
+    .loan-type-rate {
+      font-size: 0.85rem;
+      color: #4a7ba7;
+      font-weight: 600;
+    }
+  }
+}
+
+// Tenure Container
+.tenure-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .tenure-toggle {
+    align-self: flex-start;
+  }
+}
+
+// Button Group
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  button {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+
+    &:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(30, 58, 95, 0.6);
+    }
+  }
+}
+
+// Results Card Styles
+.results-card {
+  background: #1a2942;
+  box-shadow: 0 10px 40px rgba(10, 22, 40, 0.5);
+  border-radius: 16px !important;
+  animation: slideIn 0.5s ease;
+  border: 1px solid #2c4a6b;
+
+  mat-card-header {
+    padding: 1.5rem 1.5rem 0;
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #4a7ba7;
+  }
+
+  mat-card-content {
+    padding: 1.5rem;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Results Grid
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// Result Items
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateX(5px);
+  }
+
+  .result-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+
+    mat-icon {
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+      color: white;
+    }
+  }
+
+  .result-content {
+    flex: 1;
+  }
+
+  .result-label {
+    font-size: 0.9rem;
+    color: #b8c5d6;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .result-info {
+    font-size: 0.85rem;
+    color: #b8c5d6;
+  }
+}
+
+// EMI Result - Navy Blue with Ocean Teal
+.emi-result {
+  background: linear-gradient(135deg, #2c5282 0%, #1e3a5f 100%);
+  border: 1px solid #4a7ba7;
+
+  .result-icon {
+    background: rgba(74, 123, 167, 0.3);
+  }
+
+  .result-label,
+  .result-value,
+  .result-info {
+    color: white;
+  }
+}
+
+// Interest Result - Lighter Navy
+.interest-result {
+  background: linear-gradient(135deg, #4a7ba7 0%, #2c5f8d 100%);
+  border: 1px solid #5a8fb8;
+
+  .result-icon {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .result-label,
+  .result-value,
+  .result-info {
+    color: white;
+  }
+}
+
+// Total Result - Ocean Teal Accent
+.total-result {
+  background: linear-gradient(135deg, #2d7a8e 0%, #1a5568 100%);
+  border: 1px solid #3d8a9e;
+
+  .result-icon {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .result-label,
+  .result-value,
+  .result-info {
+    color: white;
+  }
+}
+
+// Summary Section
+.summary-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #0f1e33;
+  border-radius: 12px;
+  border: 1px solid #2c4a6b;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #e8eef5;
+    margin: 0 0 1rem 0;
+  }
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #1a2942;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(10, 22, 40, 0.3);
+  border: 1px solid #2c4a6b;
+
+  .summary-label {
+    font-size: 0.9rem;
+    color: #b8c5d6;
+    font-weight: 500;
+  }
+
+  .summary-value {
+    font-size: 1rem;
+    color: #e8eef5;
+    font-weight: 600;
+  }
+}
+
+// Material Divider
+mat-divider {
+  margin: 0 !important;
+  border-top-color: #2c4a6b;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .calculator-grid {
+    gap: 1rem;
+  }
+
+  .result-item {
+    padding: 1rem;
+
+    .result-icon {
+      width: 50px;
+      height: 50px;
+
+      mat-icon {
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}

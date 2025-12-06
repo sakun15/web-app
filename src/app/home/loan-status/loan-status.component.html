@@ -1,0 +1,275 @@
+<div class="loan-status-container">
+    <div class="status-wrapper">
+        <!-- Header -->
+        <mat-card class="header-card">
+            <mat-card-header>
+                <mat-card-title class="main-title">
+                    <mat-icon class="title-icon">account_balance</mat-icon>
+                    Ongoing Loan Status
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="loan-info">
+                    <div class="info-item">
+                        <span class="label">Loan ID:</span>
+                        <span class="value">{{ loanDetails.loanId }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Loan Type:</span>
+                        <span class="value">{{ loanDetails.loanType }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">EMI Amount:</span>
+                        <span class="value">{{ formatCurrency(loanDetails.emiAmount) }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <mat-card class="summary-card paid-card">
+                <mat-card-content>
+                    <div class="card-icon">
+                        <mat-icon>payments</mat-icon>
+                    </div>
+                    <div class="card-details">
+                        <h3>Total Paid</h3>
+                        <p class="amount">{{ formatCurrency(totalPaid) }}</p>
+                        <span class="sub-text">{{ emisPaid }} EMIs paid</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="summary-card remaining-card">
+                <mat-card-content>
+                    <div class="card-icon">
+                        <mat-icon>schedule</mat-icon>
+                    </div>
+                    <div class="card-details">
+                        <h3>Outstanding</h3>
+                        <p class="amount">{{ formatCurrency(outstandingBalance) }}</p>
+                        <span class="sub-text">{{ emisRemaining}} EMIs remaining</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="summary-card next-emi-card">
+                <mat-card-content>
+                    <div class="card-icon">
+                        <mat-icon>event</mat-icon>
+                    </div>
+                    <div class="card-details">
+                        <h3>Next EMI</h3>
+                        <p class="amount" *ngIf="nextEMIDate">{{ formatDate(nextEMIDate) }}</p>
+                        <span class="sub-text">{{ formatCurrency(loanDetails.emiAmount) }}</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="summary-card bounced-card" *ngIf="bouncedPayments > 0">
+                <mat-card-content>
+                    <div class="card-icon">
+                        <mat-icon>error</mat-icon>
+                    </div>
+                    <div class="card-details">
+                        <h3>Bounced</h3>
+                        <p class="amount">{{ bouncedPayments }}</p>
+                        <span class="sub-text">Failed payments</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Progress Bar -->
+        <mat-card class="progress-card">
+            <mat-card-content>
+                <h3>Repayment Progress</h3>
+                <div class="progress-details">
+                    <span>{{ emisPaid }} of {{ loanDetails.tenure }} EMIs</span>
+                    <span>{{ ((emisPaid / loanDetails.tenure) * 100).toFixed(1) }}%</span>
+                </div>
+                <mat-progress-bar mode="determinate" [value]="(emisPaid / loanDetails.tenure) * 100"></mat-progress-bar>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- EMI Calendar -->
+        <mat-card class="calendar-card">
+            <mat-card-header>
+                <mat-card-title>EMI Payment Calendar</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="calendar-controls">
+                    <button mat-icon-button (click)="previousMonth()">
+                        <mat-icon>chevron_left</mat-icon>
+                    </button>
+                    <h3>{{ monthNames[currentMonth] }} {{ currentYear }}</h3>
+                    <button mat-icon-button (click)="nextMonth()">
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                    <button mat-button (click)="goToCurrentMonth()">Today</button>
+                </div>
+
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot paid"></span>
+                        <span>Paid</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot pending"></span>
+                        <span>Pending</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot bounced"></span>
+                        <span>Bounced</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot upcoming"></span>
+                        <span>Upcoming</span>
+                    </div>
+                </div>
+
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <div class="day-name">Sun</div>
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                    </div>
+                    <div class="calendar-body">
+                        <div *ngFor="let dayData of calendarDays" class="calendar-day"
+                            [class.has-payment]="dayData.payment" [class.paid]="dayData.payment?.status === 'paid'"
+                            [class.pending]="dayData.payment?.status === 'pending'"
+                            [class.bounced]="dayData.payment?.status === 'bounced'"
+                            [class.upcoming]="dayData.payment?.status === 'upcoming'"
+                            [matTooltip]="dayData.payment ? 'EMI: ' + formatCurrency(dayData.payment.amount) + ' - ' + dayData.payment.status.toUpperCase() : ''">
+                            <span class="day-number">{{ dayData.day }}</span>
+                            <mat-icon *ngIf="dayData.payment" class="payment-icon">
+                                {{ getStatusIcon(dayData.payment.status) }}
+                            </mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Payment History Table -->
+        <mat-card class="history-card">
+            <mat-card-header>
+                <mat-card-title>Recent Payment History</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <table mat-table [dataSource]="recentPayments" class="payment-table">
+                    <ng-container matColumnDef="month">
+                        <th mat-header-cell *matHeaderCellDef>EMI #</th>
+                        <td mat-cell *matCellDef="let payment">{{ payment.month }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dueDate">
+                        <th mat-header-cell *matHeaderCellDef>Due Date</th>
+                        <td mat-cell *matCellDef="let payment">{{ formatDate(payment.dueDate) }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef>Amount</th>
+                        <td mat-cell *matCellDef="let payment">{{ formatCurrency(payment.amount) }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="principal">
+                        <th mat-header-cell *matHeaderCellDef>Principal</th>
+                        <td mat-cell *matCellDef="let payment">{{ formatCurrency(payment.principal) }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="interest">
+                        <th mat-header-cell *matHeaderCellDef>Interest</th>
+                        <td mat-cell *matCellDef="let payment">{{ formatCurrency(payment.interest) }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let payment">
+                            <mat-chip [class]="'status-chip ' + payment.status">
+                                <mat-icon>{{ getStatusIcon(payment.status) }}</mat-icon>
+                                {{ payment.status | titlecase }}
+                            </mat-chip>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Loan Details -->
+        <mat-card class="details-card">
+            <mat-card-header>
+                <mat-card-title>Loan Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Principal Amount</span>
+                        <span class="detail-value">{{ formatCurrency(loanDetails.principalAmount) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Interest Rate</span>
+                        <span class="detail-value">{{ loanDetails.interestRate }}% p.a.</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Loan Tenure</span>
+                        <span class="detail-value">{{ loanDetails.tenure }} months</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Start Date</span>
+                        <span class="detail-value">{{ formatDate(loanDetails.startDate) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">End Date</span>
+                        <span class="detail-value">{{ formatDate(loanDetails.endDate) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Principal Paid</span>
+                        <span class="detail-value">{{ formatCurrency(totalPrincipalPaid) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Interest Paid</span>
+                        <span class="detail-value">{{ formatCurrency(totalInterestPaid) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Total Payable</span>
+                        <span class="detail-value">{{ formatCurrency(loanDetails.emiAmount * loanDetails.tenure)
+                            }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Actions -->
+        <mat-card class="actions-card">
+            <mat-card-content>
+                <div class="action-buttons">
+                    <button mat-raised-button color="primary">
+                        <mat-icon>download</mat-icon>
+                        Download Statement
+                    </button>
+                    <button mat-raised-button color="accent" (click)="goToCalculator()">
+                        <mat-icon>calculate</mat-icon>
+                        EMI Calculator
+                    </button>
+                    <button mat-stroked-button>
+                        <mat-icon>print</mat-icon>
+                        Print
+                    </button>
+                    <button mat-stroked-button>
+                        <mat-icon>help</mat-icon>
+                        Support
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

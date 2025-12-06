@@ -1,0 +1,199 @@
+<div class="loan-calculator-container">
+  <div class="calculator-wrapper">
+    <!-- Header Card -->
+    <mat-card class="header-card">
+      <mat-card-header>
+        <mat-card-title class="main-title">
+          <mat-icon class="title-icon">calculate</mat-icon>
+          Professional Loan Calculator
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="subtitle">Calculate your EMI, total interest, and total amount payable</p>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="calculator-grid">
+      <!-- Input Card -->
+      <mat-card class="input-card">
+        <mat-card-header>
+          <mat-card-title>Loan Details</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="loanForm" class="loan-form">
+            <!-- Loan Type Selector -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select Loan Type</mat-label>
+              <mat-select formControlName="loanType" (selectionChange)="onLoanTypeChange($event.value)"
+                placeholder="Choose a loan type">
+                <mat-option *ngFor="let type of loanTypes" [value]="type.value">
+                  <div class="loan-type-option">
+                    <mat-icon class="loan-type-icon">{{ type.icon }}</mat-icon>
+                    <div class="loan-type-details">
+                      <span class="loan-type-label">{{ type.label }}</span>
+                      <span class="loan-type-rate">{{ type.interestRate }}% p.a.</span>
+                    </div>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>category</mat-icon>
+              <mat-hint *ngIf="selectedLoanType">
+                {{ getLoanTypeDescription(selectedLoanType) }}
+              </mat-hint>
+            </mat-form-field>
+
+            <!-- Principal Amount -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Principal Amount</mat-label>
+              <input matInput type="number" formControlName="principal" placeholder="Enter loan amount" />
+              <span matPrefix>₹&nbsp;</span>
+              <mat-icon matSuffix>account_balance</mat-icon>
+              <mat-error *ngIf="loanForm.get('principal')?.hasError('required')">
+                Principal amount is required
+              </mat-error>
+              <mat-error *ngIf="loanForm.get('principal')?.hasError('min')">
+                Minimum amount is ₹1,000
+              </mat-error>
+              <mat-error *ngIf="loanForm.get('principal')?.hasError('max')">
+                Maximum amount is ₹10,00,00,000
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Interest Rate -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Annual Interest Rate</mat-label>
+              <input matInput type="number" formControlName="interestRate" placeholder="Enter interest rate"
+                step="0.1" />
+              <span matSuffix>%</span>
+              <mat-icon matSuffix>percent</mat-icon>
+              <mat-error *ngIf="loanForm.get('interestRate')?.hasError('required')">
+                Interest rate is required
+              </mat-error>
+              <mat-error *ngIf="loanForm.get('interestRate')?.hasError('min')">
+                Minimum rate is 0.1%
+              </mat-error>
+              <mat-error *ngIf="loanForm.get('interestRate')?.hasError('max')">
+                Maximum rate is 50%
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Tenure -->
+            <div class="tenure-container">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Loan Tenure</mat-label>
+                <input matInput type="number" formControlName="tenure"
+                  [placeholder]="tenureInYears ? 'Enter tenure in years' : 'Enter tenure in months'" />
+                <span matSuffix>{{ tenureInYears ? 'Years' : 'Months' }}</span>
+                <mat-icon matSuffix>schedule</mat-icon>
+                <mat-error *ngIf="loanForm.get('tenure')?.hasError('required')">
+                  Tenure is required
+                </mat-error>
+                <mat-error *ngIf="loanForm.get('tenure')?.hasError('min')">
+                  Minimum tenure is {{ tenureInYears ? '1 year' : '1 month' }}
+                </mat-error>
+                <mat-error *ngIf="loanForm.get('tenure')?.hasError('max')">
+                  Maximum tenure is {{ tenureInYears ? '30 years' : '360 months' }}
+                </mat-error>
+              </mat-form-field>
+
+              <mat-slide-toggle [(ngModel)]="tenureInYears" [ngModelOptions]="{standalone: true}"
+                (change)="toggleTenure()" color="primary" class="tenure-toggle">
+                {{ tenureInYears ? 'Years' : 'Months' }}
+              </mat-slide-toggle>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-group">
+              <button mat-raised-button color="primary" type="button" (click)="calculateLoan()"
+                [disabled]="!loanForm.valid">
+                <mat-icon>calculate</mat-icon>
+                Calculate
+              </button>
+              <button mat-stroked-button color="accent" type="button" (click)="resetForm()">
+                <mat-icon>refresh</mat-icon>
+                Reset
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Results Card -->
+      <mat-card class="results-card" *ngIf="loanForm.valid">
+        <mat-card-header>
+          <mat-card-title>Calculation Results</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="results-grid">
+            <!-- Monthly EMI -->
+            <div class="result-item emi-result">
+              <div class="result-icon">
+                <mat-icon>payments</mat-icon>
+              </div>
+              <div class="result-content">
+                <div class="result-label">Monthly EMI</div>
+                <div class="result-value">₹ {{ formatNumber(monthlyEMI) }}</div>
+                <div class="result-info">Pay this amount every month</div>
+              </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Total Interest -->
+            <div class="result-item interest-result">
+              <div class="result-icon">
+                <mat-icon>trending_up</mat-icon>
+              </div>
+              <div class="result-content">
+                <div class="result-label">Total Interest</div>
+                <div class="result-value">₹ {{ formatNumber(totalInterest) }}</div>
+                <div class="result-info">Interest payable over {{ tenureInMonths }} months</div>
+              </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Total Amount -->
+            <div class="result-item total-result">
+              <div class="result-icon">
+                <mat-icon>account_balance_wallet</mat-icon>
+              </div>
+              <div class="result-content">
+                <div class="result-label">Total Amount Payable</div>
+                <div class="result-value">₹ {{ formatNumber(totalAmount) }}</div>
+                <div class="result-info">Principal + Interest</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Section -->
+          <div class="summary-section">
+            <h3>Loan Summary</h3>
+            <div class="summary-grid">
+              <div class="summary-item" *ngIf="selectedLoanType">
+                <span class="summary-label">Loan Type:</span>
+                <span class="summary-value">{{ getLoanTypeLabel(selectedLoanType) }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Principal Amount:</span>
+                <span class="summary-value">₹ {{ formatNumber(loanForm.get('principal')?.value) }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Interest Rate:</span>
+                <span class="summary-value">{{ loanForm.get('interestRate')?.value }}% p.a.</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Loan Tenure:</span>
+                <span class="summary-value">{{ tenureInMonths }} months</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Total Payments:</span>
+                <span class="summary-value">{{ tenureInMonths }} EMIs</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

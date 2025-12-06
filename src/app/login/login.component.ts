@@ -23,6 +23,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { TwoFactorAuthenticationComponent } from './two-factor-authentication/two-factor-authentication.component';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -46,10 +49,13 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatList,
     MatListItem,
     MatMenuTrigger,
-    FooterComponent,
-    FaIconComponent,
     MatMenu,
-    MatMenuItem
+    MatMenuItem,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    FooterComponent,
+    FaIconComponent
   ]
 })
 export class LoginComponent implements OnInit, OnDestroy {
@@ -70,7 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private settingsService: SettingsService,
     private router: Router
-  ) {}
+  ) { }
 
   /**
    * Subscribes to alert event of alert service.

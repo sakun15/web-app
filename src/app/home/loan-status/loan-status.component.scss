@@ -1,0 +1,535 @@
+.loan-status-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+}
+
+.status-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+// Header Card
+.header-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+
+    mat-card-header {
+        padding: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .main-title {
+        font-size: 2rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+
+        @media (max-width: 768px) {
+            font-size: 1.5rem;
+        }
+    }
+
+    .title-icon {
+        font-size: 2.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    mat-card-content {
+        padding: 1.5rem 2rem;
+    }
+}
+
+// Loan Info
+.loan-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .value {
+            font-size: 1.1rem;
+            color: #495057;
+            font-weight: 600;
+        }
+    }
+}
+
+// Summary Grid
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.summary-card {
+    border-radius: 16px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    mat-card-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem !important;
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+            font-size: 2rem;
+            width: 2rem;
+            height: 2rem;
+            color: white;
+        }
+    }
+
+    .card-details {
+        flex: 1;
+
+        h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .amount {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .sub-text {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    }
+}
+
+.paid-card .card-icon {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.remaining-card .card-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.next-emi-card .card-icon {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.bounced-card .card-icon {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+// Progress Card
+.progress-card {
+    background: white;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    mat-card-content {
+        padding: 1.5rem !important;
+    }
+
+    h3 {
+        margin: 0 0 1rem 0;
+        color: #495057;
+    }
+
+    .progress-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    mat-progress-bar {
+        height: 12px;
+        border-radius: 6px;
+    }
+}
+
+// Calendar Card
+.calendar-card {
+    background: white;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    mat-card-header {
+        padding: 1.5rem 1.5rem 0;
+    }
+
+    mat-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    mat-card-content {
+        padding: 1.5rem !important;
+    }
+}
+
+// Calendar Controls
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    h3 {
+        margin: 0;
+        font-size: 1.3rem;
+        color: #495057;
+        min-width: 200px;
+        text-align: center;
+    }
+}
+
+// Calendar Legend
+.calendar-legend {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+
+        &.paid {
+            background: #38ef7d;
+        }
+
+        &.pending {
+            background: #ffc107;
+        }
+
+        &.bounced {
+            background: #dc3545;
+        }
+
+        &.upcoming {
+            background: #e9ecef;
+        }
+    }
+}
+
+// Calendar
+.calendar {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #f8f9fa;
+
+    .day-name {
+        padding: 1rem;
+        text-align: center;
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+    }
+}
+
+.calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border: 1px solid #e9ecef;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    .day-number {
+        font-size: 0.9rem;
+        color: #495057;
+        margin-bottom: 0.25rem;
+    }
+
+    .payment-icon {
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    &.has-payment {
+        background: #f8f9fa;
+    }
+
+    &.paid {
+        background: #d4edda;
+
+        .payment-icon {
+            color: #28a745;
+        }
+    }
+
+    &.pending {
+        background: #fff3cd;
+
+        .payment-icon {
+            color: #ffc107;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+    }
+
+    &.bounced {
+        background: #f8d7da;
+
+        .payment-icon {
+            color: #dc3545;
+        }
+    }
+
+    &.upcoming {
+        background: #e7f3ff;
+
+        .payment-icon {
+            color: #667eea;
+        }
+    }
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+}
+
+// Payment History Table
+.history-card {
+    background: white;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    mat-card-header {
+        padding: 1.5rem 1.5rem 0;
+    }
+
+    mat-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    mat-card-content {
+        padding: 1.5rem !important;
+        overflow-x: auto;
+    }
+}
+
+.payment-table {
+    width: 100%;
+
+    th {
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .status-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 16px;
+        font-size: 0.85rem;
+
+        mat-icon {
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &.paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        &.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        &.bounced {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    }
+}
+
+// Details Card
+.details-card {
+    background: white;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    mat-card-header {
+        padding: 1.5rem 1.5rem 0;
+    }
+
+    mat-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    mat-card-content {
+        padding: 1.5rem !important;
+    }
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+
+    .detail-label {
+        font-size: 0.85rem;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        font-size: 1.1rem;
+        color: #495057;
+        font-weight: 600;
+    }
+}
+
+// Actions Card
+.actions-card {
+    background: white;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+
+    mat-card-content {
+        padding: 1.5rem !important;
+    }
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+
+    button {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+
+        mat-icon {
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+// Animations
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-day {
+        .day-number {
+            font-size: 0.75rem;
+        }
+
+        .payment-icon {
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+}

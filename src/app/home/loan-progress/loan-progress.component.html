@@ -1,0 +1,164 @@
+<div class="progress-container">
+    <div class="progress-wrapper">
+        <!-- Header Card -->
+        <mat-card class="header-card">
+            <mat-card-header>
+                <mat-card-title class="main-title">
+                    <mat-icon class="title-icon">track_changes</mat-icon>
+                    Loan Application Progress
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="application-info">
+                    <div class="info-item">
+                        <span class="label">Application ID:</span>
+                        <span class="value">{{ applicationId }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="loanType">
+                        <span class="label">Loan Type:</span>
+                        <span class="value">{{ loanType }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="loanAmount">
+                        <span class="label">Loan Amount:</span>
+                        <span class="value">{{ formatCurrency(loanAmount) }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Progress Overview Card -->
+        <mat-card class="progress-card">
+            <mat-card-content>
+                <div class="progress-overview">
+                    <h3>Application Progress</h3>
+                    <div class="progress-bar-container">
+                        <mat-progress-bar mode="determinate" [value]="progressPercentage"
+                            [color]="finalDecision === 'approved' ? 'primary' : finalDecision === 'denied' ? 'warn' : 'accent'"></mat-progress-bar>
+                        <span class="progress-text">{{ progressPercentage }}% Complete</span>
+                    </div>
+                    <p class="estimated-time" *ngIf="finalDecision === 'pending'">
+                        <mat-icon>schedule</mat-icon>
+                        Estimated completion: {{ estimatedDays }} business days
+                    </p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Decision Card (Approved) -->
+        <mat-card class="decision-card approved-card" *ngIf="finalDecision === 'approved'">
+            <mat-card-content>
+                <div class="decision-content">
+                    <mat-icon class="decision-icon">check_circle</mat-icon>
+                    <h2>Loan Approved!</h2>
+                    <p>{{ decisionMessage }}</p>
+                    <div class="decision-details">
+                        <p><strong>Decision Date:</strong> {{ decisionDate }}</p>
+                        <p><strong>Next Steps:</strong> Our team will contact you within 24 hours to complete the
+                            documentation.</p>
+                    </div>
+                    <div class="decision-actions">
+                        <button mat-raised-button color="primary">
+                            <mat-icon>download</mat-icon>
+                            Download Approval Letter
+                        </button>
+                        <button mat-stroked-button color="accent">
+                            <mat-icon>contact_mail</mat-icon>
+                            Contact Us
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Decision Card (Denied) -->
+        <mat-card class="decision-card denied-card" *ngIf="finalDecision === 'denied'">
+            <mat-card-content>
+                <div class="decision-content">
+                    <mat-icon class="decision-icon">cancel</mat-icon>
+                    <h2>Application Not Approved</h2>
+                    <p>{{ decisionMessage }}</p>
+                    <div class="decision-details">
+                        <p><strong>Decision Date:</strong> {{ decisionDate }}</p>
+                        <p><strong>Reasons:</strong></p>
+                        <ul>
+                            <li>Credit score below minimum requirement</li>
+                            <li>Insufficient income documentation</li>
+                        </ul>
+                        <p><strong>What's Next:</strong> You may reapply after 6 months or contact us to discuss
+                            alternative options.</p>
+                    </div>
+                    <div class="decision-actions">
+                        <button mat-raised-button color="primary" (click)="newApplication()">
+                            <mat-icon>refresh</mat-icon>
+                            Apply Again
+                        </button>
+                        <button mat-stroked-button color="accent">
+                            <mat-icon>help</mat-icon>
+                            Get Help
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Progress Stages -->
+        <mat-card class="stages-card">
+            <mat-card-header>
+                <mat-card-title>Application Stages</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="stages-timeline">
+                    <div *ngFor="let stage of stages; let i = index" class="stage-item"
+                        [class.completed]="stage.status === 'completed'" [class.active]="stage.status === 'active'"
+                        [class.pending]="stage.status === 'pending'">
+                        <div class="stage-indicator">
+                            <div class="stage-icon-wrapper">
+                                <mat-icon class="stage-icon">{{ stage.icon }}</mat-icon>
+                            </div>
+                            <div class="stage-line" *ngIf="i < stages.length - 1"></div>
+                        </div>
+                        <div class="stage-content">
+                            <h4 class="stage-name">{{ stage.name }}</h4>
+                            <p class="stage-description">{{ stage.description }}</p>
+                            <p class="stage-date" *ngIf="stage.date">
+                                <mat-icon>event</mat-icon>
+                                {{ stage.date }}
+                            </p>
+                            <div class="stage-status-badge" *ngIf="stage.status === 'active'">
+                                <mat-icon>hourglass_empty</mat-icon>
+                                In Progress
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Actions Card -->
+        <mat-card class="actions-card">
+            <mat-card-content>
+                <div class="actions-content">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button mat-raised-button color="primary" (click)="newApplication()">
+                            <mat-icon>add</mat-icon>
+                            New Application
+                        </button>
+                        <button mat-raised-button color="accent" (click)="goToCalculator()">
+                            <mat-icon>calculate</mat-icon>
+                            Loan Calculator
+                        </button>
+                        <button mat-stroked-button>
+                            <mat-icon>print</mat-icon>
+                            Print Status
+                        </button>
+                        <button mat-stroked-button>
+                            <mat-icon>email</mat-icon>
+                            Email Status
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
