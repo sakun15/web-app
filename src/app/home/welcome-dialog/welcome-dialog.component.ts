@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -8,7 +8,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     selector: 'mifosx-welcome-dialog',
     templateUrl: './welcome-dialog.component.html',
     styleUrls: ['./welcome-dialog.component.scss'],
-    imports: [...STANDALONE_SHARED_IMPORTS, MatIconModule, MatButtonModule]
+    standalone: true,
+    imports: [...STANDALONE_SHARED_IMPORTS, MatIconModule, MatButtonModule, MatDialogModule]
 })
 export class WelcomeDialogComponent {
     username: string;
